@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gearbox Controller Portfolio | Gearbox Controller</title><link rel="stylesheet" href="style.css"></head><body><header><div class="wrap"><h1>Gearbox Controller Portfolio</h1><p class="subtitle">STM32F411 gearbox controller portfolio: mechanical design, custom electronics, firmware architecture, PI speed control, safety interlocks, and prototype documentation.</p></div></header><nav><a href="index.html">Overview</a><a href="hardware.html">Hardware</a><a href="electronics.html">Electronics</a><a href="software.html">Software</a><a href="control.html">Control</a><a href="media.html">Media</a><a href="repository.html">Repository</a></nav><main>
+<section class="callout">
+<h2>Project Summary</h2>
+<p>This project is a safety-interlocked motorized gearbox demonstration platform. An STM32F411CEUx controller supervises a motor driver, linear actuator lock, door/reed switch, TFT display, buttons, USB connection, and two quadrature encoder channels. The main software intent is a closed-loop PI output shaft speed controller wrapped inside safety logic and user feedback.</p>
+</section>
+<div class="grid">
+<div class="card"><h3>Control Intent</h3><p>The user selects a desired output shaft RPM. The output encoder measures actual shaft speed and the firmware adjusts motor PWM through a PI controller.</p></div>
+<div class="card"><h3>Safety Intent</h3><p>The gearbox only runs when the enclosure door switch indicates a closed condition. Lock/unlock actuator commands are blocked while the gearbox is running.</p></div>
+<div class="card"><h3>User Intent</h3><p>Three buttons provide start/stop, lock/unlock, and speed selection. The display reports selected speed, measured shaft speeds, system state, and faults.</p></div>
+</div>
+<div class="figure"><img src="assets/img/prototype_overview.jpg"><div class="caption">As-built prototype showing clear enclosure door, aluminum extrusion frame, user interface panel, and external motor/shaft fixture.</div></div>
+<h2>Deliverable Alignment</h2>
+<p>The documentation was built to address the repository/portfolio requirements: major hardware, motors/actuators, sensors, custom PCB, mechanical design, software implementation, main loop/state machine, coding style, mathematical modeling, sensor processing, repository setup, Doxyfile, and README.</p>
+<table><tr><th>Rubric Topic</th><th>Where Addressed</th></tr>
+<tr><td>Performance / Functionality</td><td>Control, safety, media, and future bring-up sections.</td></tr>
+<tr><td>Features / Objectives / Challenges</td><td>Overview, hardware, electronics status, limitations, and next steps.</td></tr>
+<tr><td>Memo / Documentation</td><td>This portfolio-style website plus the Doxygen-ready repository package.</td></tr>
+<tr><td>Videos / Attachments</td><td>Media page includes prototype photos, CAD images, schematic PDFs, and demo video.</td></tr>
+<tr><td>Firmware</td><td>Software and control pages document modular firmware, state machine, PI control, and drivers.</td></tr>
+</table>
+<h2>System Features</h2>
+<ul>
+<li>Closed-loop PI speed control of output shaft RPM.</li>
+<li>Input and output shaft encoder RPM measurement.</li>
+<li>Door/reed switch safety interlock.</li>
+<li>Actuator lock/unlock logic with run-state interlock.</li>
+<li>TFT display and three-button user interface.</li>
+<li>Custom STM32F411 controller PCB design with motor, actuator, USB, encoder, button, and TFT interfaces.</li>
+</ul>
+</main><footer>Gearbox Controller Term Project Documentation</footer></body></html>

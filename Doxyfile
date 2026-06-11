@@ -1,0 +1,15 @@
+PROJECT_NAME           = "Gearbox Controller"
+PROJECT_BRIEF          = "STM32F411 gearbox controller with PI speed control and safety interlocks"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = Core/Src Core/Inc
+RECURSIVE              = YES
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+HAVE_DOT               = NO
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+QUIET                  = YES

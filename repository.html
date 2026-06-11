@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Repository and Doxygen | Gearbox Controller</title><link rel="stylesheet" href="style.css"></head><body><header><div class="wrap"><h1>Repository and Doxygen</h1><p class="subtitle">STM32F411 gearbox controller portfolio: mechanical design, custom electronics, firmware architecture, PI speed control, safety interlocks, and prototype documentation.</p></div></header><nav><a href="index.html">Overview</a><a href="hardware.html">Hardware</a><a href="electronics.html">Electronics</a><a href="software.html">Software</a><a href="control.html">Control</a><a href="media.html">Media</a><a href="repository.html">Repository</a></nav><main>
+<h2>Repository Package</h2>
+<p>The portfolio package includes a repository-ready folder with source code, headers, a Doxyfile, README, and .gitignore. This is intended to satisfy the submission requirement that the repository include source code in a CubeIDE-compatible structure, a Doxyfile, and a README linking to documentation.</p>
+<p><a href="assets/docs/repository_source.zip"><strong>Download repository source ZIP</strong></a></p>
+<h2>Included Repository Files</h2>
+<table><tr><th>File</th><th>Purpose</th></tr>
+<tr><td><code>README.md</code></td><td>Contextualizes the repository and points to the documentation.</td></tr>
+<tr><td><code>.gitignore</code></td><td>Excludes STM32CubeIDE build outputs and Doxygen generated output.</td></tr>
+<tr><td><code>Doxyfile</code></td><td>Doxygen configuration for generating source documentation from <code>Core/Src</code> and <code>Core/Inc</code>.</td></tr>
+<tr><td><code>Core/Src/*.c</code></td><td>Application, motor, actuator, buttons, encoders, UI, generated support files.</td></tr>
+<tr><td><code>Core/Inc/*.h</code></td><td>Module APIs, generated pin definitions, HAL config, interrupt headers.</td></tr>
+</table>
+<h2>Doxygen Notes</h2>
+<p>The code is prepared for Doxygen-style documentation. The most important application-level documentation is in <code>app.c</code>, which describes the finite state machine, safety interlocks, and PI controller. Additional module headers expose concise APIs for each subsystem.</p>
+<pre><code># Generate Doxygen locally if installed:
+doxygen Doxyfile
+
+# Then open:
+docs/html/index.html</code></pre>
+<h2>Portfolio Source Snapshot</h2>
+<p>The portfolio source version updates <code>app.c</code> to implement closed-loop PI speed control using the output shaft encoder. The rest of the modules preserve the motor PWM, actuator, button debounce, encoder, and UI separation.</p>
+</main><footer>Gearbox Controller Term Project Documentation</footer></body></html>

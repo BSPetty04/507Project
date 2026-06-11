@@ -1,0 +1,52 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Software Implementation | Gearbox Controller</title><link rel="stylesheet" href="style.css"></head><body><header><div class="wrap"><h1>Software Implementation</h1><p class="subtitle">STM32F411 gearbox controller portfolio: mechanical design, custom electronics, firmware architecture, PI speed control, safety interlocks, and prototype documentation.</p></div></header><nav><a href="index.html">Overview</a><a href="hardware.html">Hardware</a><a href="electronics.html">Electronics</a><a href="software.html">Software</a><a href="control.html">Control</a><a href="media.html">Media</a><a href="repository.html">Repository</a></nav><main>
+<h2>Firmware Architecture</h2>
+<p>The portfolio firmware is organized into small modules. The top-level application is intentionally implemented as a finite state machine (FSM) rather than scattered button logic. Low-level modules hide motor PWM, actuator GPIO, button debounce, encoder RPM calculation, and UI update behavior.</p>
+<table><tr><th>Module</th><th>Responsibility</th></tr>
+<tr><td><code>app.c / app.h</code></td><td>Application state machine, safety interlocks, speed selection, and closed-loop PI speed control.</td></tr>
+<tr><td><code>motor.c / motor.h</code></td><td>Starts TIM1 PWM, sets duty cycle, sets forward direction, and stops the motor.</td></tr>
+<tr><td><code>actuator.c / actuator.h</code></td><td>Wakes actuator driver, commands lock/unlock, disables actuator output, and reports fault input.</td></tr>
+<tr><td><code>buttons.c / buttons.h</code></td><td>Debounces three active-low user buttons and reports one-shot press events.</td></tr>
+<tr><td><code>encoders.c / encoders.h</code></td><td>Starts TIM3/TIM4 encoder mode and converts count deltas into RPM values.</td></tr>
+<tr><td><code>ui.c / ui.h</code></td><td>Initializes display GPIO/backlight and provides a single status update interface for the TFT layer.</td></tr>
+</table>
+<h2>Main Loop</h2>
+<p>The main loop follows a simple cooperative scheduling style. CubeMX initializes clocks and peripherals, then calls <code>APP_Init()</code>. The infinite loop repeatedly calls <code>APP_Update()</code> with a small delay. Inside <code>APP_Update()</code>, the firmware updates buttons, samples encoders, checks fault and door conditions, handles button events, runs the PI controller if the system is running, and updates the UI.</p>
+<pre><code>int main(void)
+{
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_ADC1_Init();
+    MX_SPI1_Init();
+    MX_TIM1_Init();
+    MX_TIM3_Init();
+    MX_TIM4_Init();
+    MX_USB_DEVICE_Init();
+
+    APP_Init();
+
+    while (1)
+    {
+        APP_Update();
+        HAL_Delay(5);
+    }
+}</code></pre>
+<h2>State Machine</h2>
+<div class="grid"><div class="state">STOPPED_LOCKED</div><div class="state">STOPPED_UNLOCKED</div><div class="state">RUNNING</div><div class="state">FAULT</div></div>
+<table><tr><th>State</th><th>Meaning</th><th>Allowed Actions</th></tr>
+<tr><td>STOPPED_LOCKED</td><td>Motor off; system records lock state as locked.</td><td>Start if door closed, unlock actuator, cycle speed presets.</td></tr>
+<tr><td>STOPPED_UNLOCKED</td><td>Motor off; system records lock state as unlocked.</td><td>Start if door closed, lock actuator, cycle speed presets.</td></tr>
+<tr><td>RUNNING</td><td>Motor on; PI controller regulating output shaft speed.</td><td>Stop motor. Lock/unlock blocked. Door opening causes immediate stop.</td></tr>
+<tr><td>FAULT</td><td>Fault detected from actuator driver or safety logic.</td><td>Motor and actuator disabled until fault clears.</td></tr>
+</table>
+<h2>Coding Style</h2>
+<p>The firmware uses C with a modular driver-like structure. Each module exposes a short public interface through a header file and stores implementation details in the corresponding source file. The system uses non-blocking periodic updates where practical, fixed-width integer types, named constants for assumptions, and simple functions that map closely to hardware behavior.</p>
+<h2>Known Limitations</h2>
+<ul>
+<li>PI controller gains are initial values and require physical tuning.</li>
+<li>Encoder counts per revolution must match the final encoders.</li>
+<li>The TFT display driver integration depends on the exact display controller.</li>
+<li>Actuator polarity and travel timing should be verified on final hardware.</li>
+<li>The physical custom PCB had not yet arrived, so PCB bring-up remains a planned validation step.</li>
+</ul>
+</main><footer>Gearbox Controller Term Project Documentation</footer></body></html>

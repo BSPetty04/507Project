@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mechanical Hardware | Gearbox Controller</title><link rel="stylesheet" href="style.css"></head><body><header><div class="wrap"><h1>Mechanical Hardware</h1><p class="subtitle">STM32F411 gearbox controller portfolio: mechanical design, custom electronics, firmware architecture, PI speed control, safety interlocks, and prototype documentation.</p></div></header><nav><a href="index.html">Overview</a><a href="hardware.html">Hardware</a><a href="electronics.html">Electronics</a><a href="software.html">Software</a><a href="control.html">Control</a><a href="media.html">Media</a><a href="repository.html">Repository</a></nav><main>
+<h2>Mechanical System Overview</h2>
+<p>The physical system is a motorized gearbox demonstration unit housed in an aluminum extrusion frame with panels, a clear door, hinges, and a front user interface section. CAD design files were provided as a SolidWorks/CAD package containing beams/extrusions, enclosure faces, mounting plates, gears, shafts, couplers, latch geometry, button/LCD features, and assembly files.</p>
+<div class="two"><div class="figure"><img src="assets/img/cad_overview.jpg"><div class="caption">SolidWorks WIP assembly overview showing two enclosure volumes, transparent side panels, shafts/gears, and user interface panel.</div></div><div class="figure"><img src="assets/img/prototype_overview.jpg"><div class="caption">Physical prototype assembled from extrusion, panels, hinges, LCD/buttons, and drivetrain hardware.</div></div></div>
+<h2>Major Mechanical Elements</h2>
+<div class="grid">
+<div class="card"><h3>Frame and Panels</h3><p>MakerBeam-style aluminum extrusion forms the main frame. Opaque and transparent panels enclose the drivetrain while allowing the gear train to be viewed during operation.</p></div>
+<div class="card"><h3>Door and Hinges</h3><p>The clear door provides visibility and access. Hinges and latch/lock hardware support the safety interlock strategy, where the gearbox should only run when the door switch indicates closed.</p></div>
+<div class="card"><h3>Gear Train and Shafts</h3><p>Blue shafts, collars, bearings/supports, and gear components form the drivetrain. Encoder feedback is used to monitor speed on the input/motor side and output shaft side.</p></div>
+<div class="card"><h3>Motor Fixture</h3><p>An external motor and coupler/shaft fixture connect into the gearbox, allowing the controller to drive the gear train while keeping the motor accessible during testing.</p></div>
+</div>
+<div class="two"><div class="figure"><img src="assets/img/prototype_drivetrain.jpg"><div class="caption">Internal drivetrain view with shafts, large gear, collars/supports, wiring pass-through, and enclosure interior.</div></div><div class="figure"><img src="assets/img/prototype_motor_fixture.jpg"><div class="caption">External motor/coupler/shaft fixture connected to the gearbox enclosure.</div></div></div>
+<h2>Bill of Materials / Budget</h2>
+<p>The BOM was updated so all listed components are marked purchased and arrived. The originally documented total cost is preserved as <strong>$244.00</strong>.</p>
+<table><tr><th>Component</th><th>Qty</th><th>Status</th><th>Notes</th></tr>
+<tr><td>Motor</td><td>1</td><td>Purchased / Arrived</td><td>Main drivetrain actuator.</td></tr>
+<tr><td>LCD</td><td>1</td><td>Purchased / Arrived</td><td>Adafruit TFT display used for user feedback.</td></tr>
+<tr><td>Limit/Reed Switch</td><td>1</td><td>Purchased / Arrived</td><td>Door-closed safety input.</td></tr>
+<tr><td>Coupler</td><td>1</td><td>Purchased / Arrived</td><td>Connects motor fixture to shaft.</td></tr>
+<tr><td>Solenoid / Linear Actuator</td><td>1</td><td>Purchased / Arrived</td><td>Lock/unlock mechanism.</td></tr>
+<tr><td>Encoder</td><td>1+</td><td>Purchased / Arrived</td><td>Speed feedback sensors.</td></tr>
+<tr><td>Bracket / MakerBeam</td><td>1</td><td>Purchased / Arrived</td><td>Structural mounting hardware.</td></tr>
+<tr><td>Hinges</td><td>4</td><td>Purchased / Arrived</td><td>Door hinge hardware.</td></tr>
+<tr><td>Buttons</td><td>5</td><td>Purchased / Arrived</td><td>Three used for the interface; extras available.</td></tr>
+<tr><td>Wall Adapter</td><td>1</td><td>Purchased / Arrived</td><td>External power source.</td></tr>
+<tr><td>Acrylic/PC Door</td><td>1</td><td>Purchased / Arrived</td><td>Transparent safety/access panel.</td></tr>
+<tr><td>Shaft Collars</td><td>4</td><td>Purchased / Arrived</td><td>Axial shaft positioning.</td></tr>
+</table>
+<div class="figure"><img src="assets/img/bom_budget.png"><div class="caption">Original mechanical/electronics budget screenshot used as the source for the BOM section. Documentation status was updated to show all items purchased and arrived.</div></div>
+</main><footer>Gearbox Controller Term Project Documentation</footer></body></html>

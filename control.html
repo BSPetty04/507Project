@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Control System and Safety | Gearbox Controller</title><link rel="stylesheet" href="style.css"></head><body><header><div class="wrap"><h1>Control System and Safety</h1><p class="subtitle">STM32F411 gearbox controller portfolio: mechanical design, custom electronics, firmware architecture, PI speed control, safety interlocks, and prototype documentation.</p></div></header><nav><a href="index.html">Overview</a><a href="hardware.html">Hardware</a><a href="electronics.html">Electronics</a><a href="software.html">Software</a><a href="control.html">Control</a><a href="media.html">Media</a><a href="repository.html">Repository</a></nav><main>
+<h2>Control System Intent</h2>
+<p>The intelligence of the project is a safety-supervised PI speed controller. The controller combines user-selected speed commands, encoder-based output shaft feedback, and door/actuator safety interlocks to operate the gearbox in a controlled and repeatable way. The TFT display closes the user-feedback loop by reporting selected target speed and measured input/output shaft speeds.</p>
+<h2>Closed-Loop PI Speed Control</h2>
+<p>The output shaft encoder is the feedback sensor for speed regulation. The user selects a target output shaft RPM from preset values. The firmware computes the difference between the target speed and measured output shaft RPM, then updates motor PWM duty cycle through a proportional-integral controller.</p>
+<div class="equation">error = target_rpm − measured_output_rpm</div>
+<div class="equation">integral = integral + error · Δt</div>
+<div class="equation">PWM_duty = Kp · error + Ki · integral</div>
+<p>The controller clamps duty cycle between 0 and 999 timer counts and limits the integral term to prevent windup when the motor saturates or when the system is stopped.</p>
+<table><tr><th>Controller Parameter</th><th>Initial Value</th><th>Purpose</th></tr>
+<tr><td><code>Kp</code></td><td>2.0</td><td>Immediate correction based on current speed error.</td></tr>
+<tr><td><code>Ki</code></td><td>0.5</td><td>Reduces steady-state error caused by friction/load.</td></tr>
+<tr><td>Control period</td><td>50 ms</td><td>PI update interval.</td></tr>
+<tr><td>Duty range</td><td>0–999</td><td>TIM1 PWM compare range.</td></tr>
+</table>
+<h2>Encoder RPM and Gear Ratio Modeling</h2>
+<p>Encoder RPM is calculated by sampling timer counts periodically and converting the count difference into revolutions per minute.</p>
+<div class="equation">RPM = (encoder_count_delta / counts_per_revolution) / sample_time_minutes</div>
+<p>The project can also estimate the observed gear ratio by comparing input and output shaft speeds.</p>
+<div class="equation">observed_gear_ratio = input_shaft_RPM / output_shaft_RPM</div>
+<h2>Safety Mechanisms</h2>
+<table><tr><th>Safety Feature</th><th>Implementation</th><th>Reason</th></tr>
+<tr><td>Door switch interlock</td><td>Motor can only start if <code>SW_NO</code> reports the enclosure is closed.</td><td>Prevents gear train operation while the door is open.</td></tr>
+<tr><td>Door-open stop</td><td>If the door opens while running, the controller immediately stops PWM.</td><td>Prevents unsafe access to moving parts.</td></tr>
+<tr><td>Actuator interlock</td><td>Lock/unlock commands are blocked while the motor is running.</td><td>Prevents mechanical locking movement during rotation.</td></tr>
+<tr><td>Fault state</td><td>Actuator fault input disables motor and actuator outputs.</td><td>Stops operation when driver fault is detected.</td></tr>
+</table>
+<h2>User Interactions</h2>
+<ul>
+<li><strong>Button 1:</strong> start/stop the selected speed.</li>
+<li><strong>Button 2:</strong> lock/unlock actuator when stopped.</li>
+<li><strong>Button 3:</strong> cycle through target RPM presets.</li>
+<li><strong>TFT display:</strong> target RPM, input RPM, output RPM, running/stopped state, lock state, door state, and fault state.</li>
+</ul>
+<h2>Future Improvements</h2>
+<ul>
+<li>Experimentally tune PI gains for smoother transient response and lower steady-state error.</li>
+<li>Add optional PID derivative damping if the gearbox oscillates near setpoint.</li>
+<li>Add automatic gear ratio estimation and display it during operation.</li>
+<li>Add a TFT setup screen for encoder CPR and PI gain adjustment.</li>
+<li>Add actuator position feedback or limit switches for confirmed lock/unlock state.</li>
+<li>Add motor current sensing to detect stalls or excessive load.</li>
+<li>Add USB serial debug commands for tuning, telemetry, and diagnostics.</li>
+<li>Add event logging for door-open events, actuator faults, and speed-control faults.</li>
+</ul>
+</main><footer>Gearbox Controller Term Project Documentation</footer></body></html>

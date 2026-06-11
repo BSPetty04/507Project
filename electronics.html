@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Electrical Hardware and PCB | Gearbox Controller</title><link rel="stylesheet" href="style.css"></head><body><header><div class="wrap"><h1>Electrical Hardware and PCB</h1><p class="subtitle">STM32F411 gearbox controller portfolio: mechanical design, custom electronics, firmware architecture, PI speed control, safety interlocks, and prototype documentation.</p></div></header><nav><a href="index.html">Overview</a><a href="hardware.html">Hardware</a><a href="electronics.html">Electronics</a><a href="software.html">Software</a><a href="control.html">Control</a><a href="media.html">Media</a><a href="repository.html">Repository</a></nav><main>
+<h2>Custom PCB Overview</h2>
+<p>The custom PCB is the central electrical interface for the gearbox controller. It is built around an STM32F411CEUx microcontroller and includes connectors and circuits for power conversion, motor control, actuator control, encoders, TFT display, buttons, USB, and SWD programming.</p>
+<div class="figure"><img src="assets/img/pcb_render.png"><div class="caption">Custom Gear Box Controller PCB render showing STM32 control electronics, headers, power components, capacitors, and project branding.</div></div>
+<div class="warning"><strong>PCB status:</strong> At the time of this documentation, the custom PCB schematic and layout were completed, but the physical PCB had not yet arrived. Physical validation is therefore listed as a planned bring-up step rather than a completed result.</div>
+<h2>Schematic Summary</h2>
+<div class="two"><div class="figure"><img src="assets/img/schematic_sheet1-1.jpg"><div class="caption">Schematic sheet 1: 24 V to 5 V to 3.3 V power supply chain, STM32 MCU block, oscillator/reset circuitry, decoupling, and SWD programming interface.</div></div><div class="figure"><img src="assets/img/schematic_sheet2-1.jpg"><div class="caption">Schematic sheet 2: motor driver, linear actuator driver, limit/reed switch, TFT LCD connector, encoder connector, USB connector, and button connector.</div></div></div>
+<p><a href="assets/docs/SHEET_1.pdf">Download schematic sheet 1 PDF</a> | <a href="assets/docs/SHEET_2.pdf">Download schematic sheet 2 PDF</a></p>
+<h2>MCU Pinout and Hardware Mapping</h2>
+<div class="figure"><img src="assets/img/stm32_pinout.png"><div class="caption">CubeMX STM32F411CEUx pinout connecting firmware labels to physical MCU pins.</div></div>
+<table><tr><th>Subsystem</th><th>Signals</th><th>Purpose</th></tr>
+<tr><td>Motor Driver</td><td>PWM, DIR1, DIR2</td><td>Controls motor speed and direction.</td></tr>
+<tr><td>Actuator Driver</td><td>ACT_EN, ACT_DIR, ACT_SLEEP, ACT_FAULT</td><td>Controls lock/unlock actuator and reads fault status.</td></tr>
+<tr><td>Encoders</td><td>ENC_A/B, SHAFT_ENC_A/B, SHAFT_ENC_Z</td><td>Measures input and output shaft speed; index input available for shaft reference.</td></tr>
+<tr><td>User Inputs</td><td>BTN1, BTN2, BTN3, SW_NO</td><td>Buttons plus door/reed switch safety input.</td></tr>
+<tr><td>Display</td><td>TFT_CS, TFT_SCK, TFT_MISO, TFT_MOSI, TFT_DC, TFT_RST, TFT_LITE</td><td>SPI TFT display and control/backlight pins.</td></tr>
+<tr><td>Debug/USB</td><td>SWDIO, SWDCLK, USB_D+, USB_D−</td><td>Programming/debugging and USB CDC interface.</td></tr>
+</table>
+<h2>PCB Bring-Up Plan</h2>
+<ol>
+<li>Visually inspect PCB for solder bridges, reversed components, and connector orientation.</li>
+<li>Check continuity between power and ground before applying power.</li>
+<li>Apply 24 V input through a current-limited supply.</li>
+<li>Verify 5 V and 3.3 V regulator outputs.</li>
+<li>Confirm BOOT0, NRST, SWDIO, and SWCLK behavior.</li>
+<li>Program STM32 using ST-Link.</li>
+<li>Confirm USB CDC enumeration.</li>
+<li>Test GPIO outputs with no motor/actuator connected.</li>
+<li>Test buttons, door switch, encoder inputs, and TFT signals.</li>
+<li>Connect motor/actuator loads and test at low duty cycle.</li>
+<li>Tune the PI speed controller after encoder readings are verified.</li>
+</ol>
+<div class="warning"><strong>Known electrical risk:</strong> PB8 / TFT_LITE should be verified because the firmware treats it as a backlight GPIO while CubeMX/MSP setup may route PB8 through TIM4_CH3 depending on the final configuration. This should be checked during PCB bring-up.</div>
+</main><footer>Gearbox Controller Term Project Documentation</footer></body></html>
